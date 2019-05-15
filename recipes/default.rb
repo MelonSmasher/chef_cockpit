@@ -18,6 +18,9 @@ when 'debian', 'ubuntu', 'centos', 'redhat'
         owner 'root'
         group 'root'
       end
+      apt_update 'backports-sloppy' do
+        subscribes :update, 'file[/etc/apt/sources.list.d/backports-sloppy.list]', :immediately
+      end
     when 'stretch'
       apt_repository 'backports' do
         uri 'http://deb.debian.org/debian/'
