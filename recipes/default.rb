@@ -53,9 +53,9 @@ when 'ubuntu', 'centos', 'redhat'
     end
   end
 
-  machines = Chef::JSONCompat.to_json_pretty(node['cockpit_install']['machines'])
+  machines = Chef::JSONCompat.to_json_pretty(node['cockpit_install']['machines'].to_hash)
   file '/etc/cockpit/machines.d/50-chef.json' do
-    content machines
+    content machines.to_s
     mode '0644'
     owner 'root'
     group 'root'
