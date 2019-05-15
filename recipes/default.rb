@@ -40,11 +40,9 @@ else
   end
 end
 
-# Enable and start the services
-%w(cockpit.socket cockpit-ws).each do |name|
-  service name do
-    action [:enable, :start]
-  end
+# Enable and start the service
+service 'cockpit.socket' do
+  action [:enable, :start]
 end
 
 # Add firewall rules on CentOS and RHEL
