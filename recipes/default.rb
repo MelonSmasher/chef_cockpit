@@ -13,7 +13,7 @@ when 'debian', 'ubuntu', 'centos', 'redhat'
     case node['lsb']['codename']
     when 'jessie'
       apt_repository 'backports-sloppy' do
-        uri 'http://archive.debian.org/debian/'
+        uri '[check-valid-until=no] http://archive.debian.org/debian/'
         distribution 'jessie-backports-sloppy'
         components ['main']
       end
