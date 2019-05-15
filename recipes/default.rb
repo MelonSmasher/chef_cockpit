@@ -53,13 +53,15 @@ when 'ubuntu', 'centos', 'redhat'
     end
   end
 
-  machines = Chef::JSONCompat.to_json_pretty(node['cockpit_install']['machines'].to_hash)
-  file '/etc/cockpit/machines.d/50-chef.json' do
-    content machines.to_s
-    mode '0644'
-    owner 'root'
-    group 'root'
-    notifies :restart, 'service[cockpit],service[cockpit.socket]', :delayed
+  if node['cockpit_install']['machines']
+    template '/etc/cockpit/machines.d/50-chef.json' do
+      source '50-chef.json.erb'
+      mode '0644'
+      owner 'root'
+      group 'root'
+      variables(machines: node['cockpit_install']['machines'])
+      notifies :restart, 'service[cockpit],service[cockpit.socket]', :delayed
+    end
   end
 
 else
