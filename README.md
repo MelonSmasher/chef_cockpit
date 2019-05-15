@@ -65,7 +65,7 @@ A list of machines that the machine should connect to.
 
 Default Value:
 
-* `false`
+* `{}`
 
 JSON usage:
 
