@@ -5,29 +5,10 @@
 
 # Run only on supported platforms
 case node['platform']
-when 'debian', 'ubuntu', 'centos', 'redhat'
+when 'ubuntu', 'centos', 'redhat'
 
-# Enable repos on Debian and RHEL
+# Enable RHEL repos
   case node['platform']
-  when 'debian'
-    case node['lsb']['codename']
-    when 'jessie'
-      file '/etc/apt/sources.list.d/backports-sloppy.list' do
-        content 'deb [check-valid-until=no] http://archive.debian.org/debian jessie-backports-sloppy main'
-        mode '0644'
-        owner 'root'
-        group 'root'
-      end
-      apt_update 'backports-sloppy' do
-        subscribes :update, 'file[/etc/apt/sources.list.d/backports-sloppy.list]', :immediately
-      end
-    when 'stretch'
-      apt_repository 'backports' do
-        uri 'http://deb.debian.org/debian/'
-        distribution 'stretch-backports'
-        components ['main']
-      end
-    end
   when 'redhat'
     rhsm_repo 'rhel-7-server-extras-rpms' do
       action :enable

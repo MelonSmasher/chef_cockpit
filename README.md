@@ -8,7 +8,6 @@ Installs [Cockpit](https://cockpit-project.org/) on linux hosts.
 ## Supports:
 
 * Ubuntu
-* Debian
 * RedHat
 * CentOS
 
