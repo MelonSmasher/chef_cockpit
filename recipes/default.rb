@@ -66,29 +66,30 @@ when 'ubuntu', 'centos', 'redhat'
   if node['cockpit_install']['auto_discover']
     unless node['cockpit_install']['auto_discover'].nil?
       discovered = {}
-      search(:node,
-             node['cockpit_install']['auto_discover_filter'],
-             :filter_result => {'name' => ['name'],
-                                'ip' => ['ipaddress'],
-                                'platform' => ['platform']
-             }
-      ).each do |result|
-        case result['platform']
-        when 'ubuntu', 'redhat', 'centos'
-          discovered[result['name']] = {
-              address: "#{result['ip'].to_s}",
-              visible: true
-          }
+      node['cockpit_install']['auto_discover_filter'].each do |filter|
+        search(:node, filter,
+               :filter_result => {'name' => ['name'],
+                                  'ip' => ['ipaddress'],
+                                  'platform' => ['platform']
+               }
+        ).each do |result|
+          case result['platform']
+          when 'ubuntu', 'redhat', 'centos'
+            discovered[result['name']] = {
+                address: "#{result['ip'].to_s}",
+                visible: true,
+                user: ""
+            }
+          end
         end
       end
-    end
-
-    template '/etc/cockpit/machines.d/50-chef-discovered.json' do
-      source '50-chef-discovered.json.erb'
-      mode '0644'
-      owner 'root'
-      group 'root'
-      variables(discovered: discovered.to_hash)
+      template '/etc/cockpit/machines.d/50-chef-discovered.json' do
+        source '50-chef-discovered.json.erb'
+        mode '0644'
+        owner 'root'
+        group 'root'
+        variables(discovered: discovered.to_hash)
+      end
     end
   end
 
