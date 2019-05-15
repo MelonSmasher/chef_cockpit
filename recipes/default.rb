@@ -59,13 +59,13 @@ when 'ubuntu', 'centos', 'redhat'
       mode '0644'
       owner 'root'
       group 'root'
-      variables(machines: node['cockpit_install']['machines'])
+      variables(machines: node['cockpit_install']['machines'].to_hash)
     end
   end
 
   if node['cockpit_install']['auto_discover']
     unless node['cockpit_install']['auto_discover'].nil?
-      discovered = []
+      discovered = {}
       search(:node,
              node['cockpit_install']['auto_discover_filter'],
              :filter_result => {'name' => ['name'],
@@ -75,8 +75,10 @@ when 'ubuntu', 'centos', 'redhat'
       ).each do |result|
         case result['platform']
         when 'ubuntu', 'redhat', 'centos'
-          discovered[result['name']]['address'] = result['ip']
-          discovered[result['name']]['visible'] = true
+          discovered[result['name']] = {
+              address: "#{result['ip'].to_s}",
+              visible: true
+          }
         end
       end
     end
@@ -86,7 +88,7 @@ when 'ubuntu', 'centos', 'redhat'
       mode '0644'
       owner 'root'
       group 'root'
-      variables(discovered: discovered)
+      variables(discovered: discovered.to_hash)
     end
   end
 
