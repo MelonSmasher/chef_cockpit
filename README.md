@@ -58,3 +58,31 @@ JSON usage:
    }
 }
 ```
+
+### Machines
+
+A list of machines that the machine should connect to.
+
+Default Value:
+
+* `false`
+
+JSON usage:
+
+```json
+{
+  "cockpit_install": {
+    "machines": {
+        "server.example.com": {
+            "address": "server.example.com",
+            "visible" : true,
+            "user" : ""
+        },
+        "server2.example.com": {
+            "address": "server2.example.com",
+            "visible" : true,
+            "user" : ""
+        }
+      }
+   }
+}
