@@ -20,14 +20,14 @@ when 'ubuntu', 'centos', 'redhat'
   when 'install', 'upgrade', 'remove'
     package 'cockpit' do
       action node['cockpit_install']['action'].to_s.to_sym
-      notifies :restart, 'service[cockpit]', :delayed
+      notifies :restart, 'service[cockpit],service[cockpit.socket]', :delayed
     end
   else
     # Install a specific version
     package 'cockpit' do
       action :install
       version node['cockpit_install']['action'].to_s
-      notifies :restart, 'service[cockpit]', :delayed
+      notifies :restart, 'service[cockpit],service[cockpit.socket]', :delayed
     end
   end
 
