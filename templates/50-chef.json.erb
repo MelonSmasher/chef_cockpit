@@ -1,15 +1,1 @@
-{
-  <% @machines.each do |name, machine| %>
-  "<%=name%>": {
-    <%= "\"user\": \"#{machine['user']}\"," if machine['user']%>
-    <%= "\"visible\": #{machine['visible']}," if machine['visible']%>
-    <%= "\"port\": #{machine['port']}," if machine['port']%>
-    <%= "\"color\": \"#{machine['color']}\"," if machine['color']%>
-    "address": "<%=machine['address']%>"
-  },
-  <% end %>
-  "hidden": {
-    "visible": false,
-    "address": "127.0.0.1"
-  }
-}
+<%= Chef::JSONCompat.to_json_pretty(@machines) %>
