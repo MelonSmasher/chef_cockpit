@@ -20,14 +20,14 @@ when 'ubuntu', 'centos', 'redhat'
   when 'install', 'upgrade', 'remove'
     package 'cockpit' do
       action node['cockpit_install']['action'].to_s.to_sym
-      notifies :restart, 'service[cockpit.socket]', :delayed
+      notifies :restart, 'service[cockpit]', :delayed
     end
   else
     # Install a specific version
     package 'cockpit' do
       action :install
       version node['cockpit_install']['action'].to_s
-      notifies :restart, 'service[cockpit.socket]', :delayed
+      notifies :restart, 'service[cockpit]', :delayed
     end
   end
 
@@ -35,6 +35,10 @@ when 'ubuntu', 'centos', 'redhat'
   service 'cockpit.socket' do
     action [:enable, :start]
   end
+  service 'cockpit' do
+    action [:enable, :start]
+  end
+
 
 # Add firewall rules on CentOS and RHEL
   case node['platform']
