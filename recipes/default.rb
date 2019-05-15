@@ -12,10 +12,11 @@ when 'debian', 'ubuntu', 'centos', 'redhat'
   when 'debian'
     case node['lsb']['codename']
     when 'jessie'
-      apt_repository 'backports-sloppy' do
-        uri '[check-valid-until=no] http://archive.debian.org/debian/'
-        distribution 'jessie-backports-sloppy'
-        components ['main']
+      file '/etc/apt/sources.list.d/backports-sloppy.list' do
+        content 'deb [check-valid-until=no] http://archive.debian.org/debian jessie-backports-sloppy main'
+        mode '0644'
+        owner 'root'
+        group 'root'
       end
     when 'stretch'
       apt_repository 'backports' do
