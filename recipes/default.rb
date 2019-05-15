@@ -65,7 +65,7 @@ when 'ubuntu', 'centos', 'redhat'
 
   if node['cockpit_install']['auto_discover']
     unless node['cockpit_install']['auto_discover'].nil?
-      discovered = {}
+      discovered = []
       search(:node,
              node['cockpit_install']['auto_discover_filter'],
              :filter_result => {'name' => ['name'],
@@ -73,10 +73,10 @@ when 'ubuntu', 'centos', 'redhat'
                                 'platform' => ['platform']
              }
       ).each do |result|
-        if result['platform'] =~ /ubuntu|redhat|centos/
-          discovered[result['name']] = {
-              address: result['ip']
-          }
+        case result['platform']
+        when 'ubuntu', 'redhat', 'centos'
+          discovered[result['name']]['address'] = result['ip']
+          discovered[result['name']]['visible'] = true
         end
       end
     end
